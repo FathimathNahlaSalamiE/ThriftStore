@@ -1,0 +1,6 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" name="role" value="buyer">Register as Buyer</button>
+    <button type="submit" name="role" value="seller">Register as Seller</button>
+</form>
