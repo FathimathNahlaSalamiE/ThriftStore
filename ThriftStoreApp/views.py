@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect
-from .models import CustomUser
+from django.shortcuts import render,redirect,get_object_or_404
+from .models import CustomUser,ProductDb
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
-from .forms import SignupForm,LoginForm
+from .forms import SignupForm,LoginForm,AddProductForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def signup(request):
@@ -14,7 +15,11 @@ def signup(request):
             user.set_password(form.cleaned_data['password'])
             
             role = request.POST.get('role')
-            user.role = role
+
+            if role == 'seller':
+                user.role = 'seller'
+            else:
+                user.role = 'buyer'
 
             user.save()
 
@@ -40,9 +45,9 @@ def login_view(request):
                 login(request,user)
 
                 if user.role == 'seller':
-                    return HttpResponse('user is seller')
+                    return redirect('add_product')
                 else:
-                    return HttpResponse('user is buyer')
+                    return redirect('display_product')
             else:
                 return render(request,'login.html',{'form':form,'error':'Invalid credentials'})        
     else:
@@ -61,6 +66,65 @@ def logout_view(request):
 def seller_required(view_func):
     def wrapper(request, *args, **kwargs):
         if request.user.role != 'seller':
-            return HttpResponse("Access denied")
+            return redirect('login')
         return view_func(request, *args, **kwargs)
     return wrapper
+
+
+@login_required
+def display_product(request):
+    product_list = ProductDb.objects.all()
+    return render(request,'display_product.html',{'product_list':product_list})
+
+
+@login_required
+@seller_required
+def add_product(request):
+    product_list = ProductDb.objects.filter(product_seller= request.user)
+
+    if request.method == "POST":
+        form = AddProductForm(request.POST,request.FILES)
+    
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.product_seller = request.user
+            product.save()
+
+            return redirect('add_product')
+    else:
+        form = AddProductForm()
+
+    return render(request,'add_products.html',{'product_list':product_list,'form':form})
+
+
+@login_required
+@seller_required
+def edit_product(request,id):
+    product = get_object_or_404(
+        ProductDb,
+        id= id,
+        product_seller = request.user
+    )
+
+    if request.method == "POST":
+        form = AddProductForm(request.POST,request.FILES,instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('add_product')
+    else:
+        form = AddProductForm(instance=product)
+    
+    return render(request,'add_products.html',{'form':form,'is_edit':True})
+
+
+@login_required
+@seller_required
+def delete_product(request,id):
+    product = get_object_or_404(
+        ProductDb,
+        id=id,
+        product_seller= request.user
+    )
+
+    product.delete()
+    return redirect('add_product')
