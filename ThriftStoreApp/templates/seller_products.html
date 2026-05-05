@@ -1,20 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Thrift Store</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <h2>My Products</h2>
+    <a href="{% url 'add_product' %}">Add product</a>
     <div>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form.as_p}}
-            <button type="submit">Add Product</button>
-        </form>
-    </div>
-    {% if not 'is_edit' %}
         {% for product in product_list %}
             <div>
                 <h3>{{ product.product_name }}</h3>
@@ -28,6 +24,6 @@
         {% empty %}
             <p>No products added yet</p>
         {% endfor %}
-    {% endif %}
+    </div>
 </body>
 </html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thrift Store</title>
+</head>
+<body>
+    <h2>Edit Product</h2>
+    <a href="{% url 'seller_products' %}">Back to Home</a>
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            {% if form.instance.product_image %}
+                <p>Current Image:</p>
+                <img src="{{ form.instance.product_image.url }}" width="150">
+            {% endif %}
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+</body>
+</html>

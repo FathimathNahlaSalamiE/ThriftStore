@@ -45,9 +45,9 @@ def login_view(request):
                 login(request,user)
 
                 if user.role == 'seller':
-                    return redirect('add_product')
+                    return redirect('seller_products')
                 else:
-                    return redirect('display_product')
+                    return redirect('display_products')
             else:
                 return render(request,'login.html',{'form':form,'error':'Invalid credentials'})        
     else:
@@ -72,16 +72,14 @@ def seller_required(view_func):
 
 
 @login_required
-def display_product(request):
+def display_products(request):
     product_list = ProductDb.objects.all()
-    return render(request,'display_product.html',{'product_list':product_list})
+    return render(request,'display_products.html',{'product_list':product_list})
 
 
 @login_required
 @seller_required
 def add_product(request):
-    product_list = ProductDb.objects.filter(product_seller= request.user)
-
     if request.method == "POST":
         form = AddProductForm(request.POST,request.FILES)
     
@@ -90,11 +88,18 @@ def add_product(request):
             product.product_seller = request.user
             product.save()
 
-            return redirect('add_product')
+            return redirect('seller_products')
     else:
         form = AddProductForm()
 
-    return render(request,'add_products.html',{'product_list':product_list,'form':form})
+    return render(request,'add_product.html',{'form':form})
+
+
+@login_required
+@seller_required
+def seller_products(request):
+    product_list = ProductDb.objects.filter(product_seller= request.user)
+    return render(request,'seller_products.html',{'product_list':product_list})
 
 
 @login_required
@@ -114,7 +119,7 @@ def edit_product(request,id):
     else:
         form = AddProductForm(instance=product)
     
-    return render(request,'add_products.html',{'form':form,'is_edit':True})
+    return render(request,'edit_product.html',{'form':form})
 
 
 @login_required
@@ -127,4 +132,4 @@ def delete_product(request,id):
     )
 
     product.delete()
-    return redirect('add_product')
+    return redirect('seller_products')

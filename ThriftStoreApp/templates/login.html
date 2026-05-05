@@ -1,10 +1,26 @@
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thrift Store - Login</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="form-css">
+        <h1 class="form-heading">Login Here</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
 
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
+            {% if error %}
+                <p style="color:red;">{{ error }}</p>
+            {% endif %}
 
-    <button type="submit">Login</button>
-</form>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="{% url 'signup' %}">Register Here</a></p>
+    </div>
+</body>
+</html>

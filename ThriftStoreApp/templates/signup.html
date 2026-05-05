@@ -1,6 +1,40 @@
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit" name="role" value="buyer">Register as Buyer</button>
-    <button type="submit" name="role" value="seller">Register as Seller</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thrift Store - Signup</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="form-css">
+        <h1 class="form-heading">Register Here</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <div>
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                </div>
+
+                <div>
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+
+                <div>
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                </div>
+
+                <div>
+                    {{ form.user_image.label_tag }}
+                    {{ form.user_image }}
+                </div>
+            <button type="submit" name="role" value="buyer">Signup as Buyer</button>
+            <button type="submit" name="role" value="seller">Signup as Seller</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login Here</a></p>
+    </div>    
+</body>
+</html>
