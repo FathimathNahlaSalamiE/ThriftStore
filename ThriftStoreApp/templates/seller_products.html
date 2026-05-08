@@ -1,29 +1,64 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thrift Store</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <h2>My Products</h2>
+
+
+{% block title %}
+Seller Products
+{% endblock %}
+
+{% block content %}
+
+<h2>My Products</h2>
     <a href="{% url 'add_product' %}">Add product</a>
-    <div>
+    <div class="products-grid">
         {% for product in product_list %}
-            <div>
-                <h3>{{ product.product_name }}</h3>
-                <p>{{ product.product_category }}</p>
-                <p>{{ product.product_description }}</p>
-                <img src="{{ product.product_image.url }}" alt="">
-                <p>{{ product.product_price }}</p>
-                <a href="{% url 'edit_product' product.id %}">Edit</a>
-                <a href="{% url 'delete_product' product.id %}">Delete</a>
-            </div>
+                <div class="card product-card">
+                    <img src="{{ product.product_image.url }}" class="card-img-top" alt="">
+                    <div class="card-body d-flex flex-column">
+                        <h2 class="card-title">{{ product.product_name }}</h2>
+                        <p class="card-text"><small class="text-body-secondary">{{ product.product_category }}</small></p>
+                        <div class="desc-wrapper">
+                            <p class="card-text description">
+                            <span class="text-content">
+                                {{ product.product_description }}
+                            </span>
+                        </p>
+                        </div>
+                        <p class="product-price card-text fw-bold">₹ {{ product.product_price }}</p>
+                        <div class="mt-auto">
+                            <a href="{% url 'edit_product' product.id %}" class="btn edit-btn">Edit</a>
+                            <a href="{% url 'delete_product' product.id %}" class="btn btn-dark">Delete</a>
+                        </div>
+                    </div>
+                </div>
         {% empty %}
             <p>No products added yet</p>
         {% endfor %}
     </div>
-</body>
-</html>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            document.querySelectorAll(".desc-wrapper").forEach(wrapper => {
+                let desc = wrapper.querySelector(".description");
+                let btn = wrapper.querySelector(".read-more-btn");
+
+                if (desc.scrollHeight > desc.clientHeight) {
+                    btn.classList.remove("d-none");
+                }
+
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    if (desc.style.webkitLineClamp === "unset") {
+                        desc.style.webkitLineClamp = "3";
+                        this.textContent = "Read more";
+                    } else {
+                        desc.style.webkitLineClamp = "unset";
+                        this.textContent = "Read less";
+                    }
+                });
+            });
+
+        });
+    </script>
+{% endblock %}

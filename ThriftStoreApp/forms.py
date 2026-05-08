@@ -58,6 +58,9 @@ class AddProductForm(forms.ModelForm):
             'product_price',
             'product_image'
         ]
+        widgets = {
+            'product_image': forms.FileInput()
+        }
         
 
     def __init__(self, *args, **kwargs):

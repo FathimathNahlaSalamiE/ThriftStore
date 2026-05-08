@@ -1,23 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thrift Store</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Seller Products
+{% endblock %}
+
+{% block content %}
     <h2>Edit Product</h2>
     <a href="{% url 'seller_products' %}">Back to Home</a>
     <div>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{form.as_p}}
+            <!-- {{form.as_p}} -->
+            {{ form.product_name.label_tag }}
+            {{ form.product_name }}
+
+            {{ form.product_description.label_tag }}
+            {{ form.product_description }}
+
+            {{ form.product_category.label_tag }}
+            {{ form.product_category }}
+
+            {{ form.product_price.label_tag }}
+            {{ form.product_price }}
+
             {% if form.instance.product_image %}
                 <p>Current Image:</p>
                 <img src="{{ form.instance.product_image.url }}" width="150">
             {% endif %}
-            <button type="submit">Add Product</button>
+
+            {{ form.product_image.label_tag }}
+            {{ form.product_image }}
+
+            <button type="submit">Update Product</button>
         </form>
     </div>
-</body>
-</html>
+{% endblock %}

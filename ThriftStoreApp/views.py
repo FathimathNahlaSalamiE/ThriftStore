@@ -99,6 +99,7 @@ def add_product(request):
 @seller_required
 def seller_products(request):
     product_list = ProductDb.objects.filter(product_seller= request.user)
+    ProductDb.objects.filter(product_image='').delete()
     return render(request,'seller_products.html',{'product_list':product_list})
 
 
@@ -115,7 +116,7 @@ def edit_product(request,id):
         form = AddProductForm(request.POST,request.FILES,instance=product)
         if form.is_valid():
             form.save()
-            return redirect('add_product')
+            return redirect('seller_products')
     else:
         form = AddProductForm(instance=product)
     
