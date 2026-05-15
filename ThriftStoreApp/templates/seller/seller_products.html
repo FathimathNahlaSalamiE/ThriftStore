@@ -35,30 +35,5 @@ Seller Products
             <p>No products added yet</p>
         {% endfor %}
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
 
-            document.querySelectorAll(".desc-wrapper").forEach(wrapper => {
-                let desc = wrapper.querySelector(".description");
-                let btn = wrapper.querySelector(".read-more-btn");
-
-                if (desc.scrollHeight > desc.clientHeight) {
-                    btn.classList.remove("d-none");
-                }
-
-                btn.addEventListener("click", function (e) {
-                    e.preventDefault();
-
-                    if (desc.style.webkitLineClamp === "unset") {
-                        desc.style.webkitLineClamp = "3";
-                        this.textContent = "Read more";
-                    } else {
-                        desc.style.webkitLineClamp = "unset";
-                        this.textContent = "Read less";
-                    }
-                });
-            });
-
-        });
-    </script>
 {% endblock %}

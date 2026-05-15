@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Product
+{% endblock %}
+
+{% block content %}
+
+
+
+
+
+
+<h2>Pan</h2>
+
+
+    <div class="d-flex">
+
+<div class="m-5">
+                    <img src="{{ product.product_image.url }}" class="card-img-top" alt="">
+</div>
+
+                    <div class="card-body d-flex flex-column m-4">
+                        <h2 class="card-title">{{ product.product_name }}</h2>
+                        <p class="card-text"><small class="text-body-secondary">{{ product.product_category }}</small></p>
+                        <div class="desc-wrapper">
+                            <p class="card-text description"> 
+                            <span class="text-content">
+                                {{ product.product_description }}
+                            </span>
+                        </p>
+                        </div>
+                        <p class="product-price card-text fw-bold">₹ {{ product.product_price }}</p>
+
+                        <form action="" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+                            <div style="
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            ">
+                                <input style="
+                                    text-align: center;
+                                    width: 45%;
+                                    background-color: #f3eded;" 
+                                    class="mt-1 p-1" type="number" id="quantity" min="1" placeholder="Quantity">
+                            </div>                            
+                            <div><input  type="hidden" id="price" value="{{ product.product_price }}" placeholder="Price" readonly></div>
+                            <div style="
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                ">
+                                    <input class="mt-3 p-1" style="
+                                        text-align: center;
+                                        width: 45%;
+                                        background-color: #f3eded;
+                                        font-size:medium;" type="text" id="total" placeholder="Total Price" readonly>
+                            </div>
+                            
+									<input type="hidden" name="username" id="" placeholder="" class="form-control" value="{{request.user.username}}">
+									<input type="hidden" name="pname" id="" placeholder="" class="form-control" value="{{product.product_name}}">
+                                    
+							<button class="edit-btn" type="submit"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                        </form>
+        
+                    </div>
+                
+    </div>
+
+    <script>
+    document.getElementById('quantity').addEventListener('input', function () {
+
+        let quantity = document.getElementById('quantity').value;
+        let price = document.getElementById('price').value;
+
+        let total = quantity * price;
+
+        document.getElementById('total').value = total;
+    });
+</script>
+
+{% endblock %}

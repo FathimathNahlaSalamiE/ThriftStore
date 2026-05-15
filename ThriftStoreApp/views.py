@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import CustomUser,ProductDb
+from .models import CustomUser,ProductDb,CategoryDb
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
 from .forms import SignupForm,LoginForm,AddProductForm
@@ -47,7 +47,7 @@ def login_view(request):
                 if user.role == 'seller':
                     return redirect('seller_products')
                 else:
-                    return redirect('display_products')
+                    return redirect('home_page')
             else:
                 return render(request,'login.html',{'form':form,'error':'Invalid credentials'})        
     else:
@@ -71,11 +71,6 @@ def seller_required(view_func):
     return wrapper
 
 
-@login_required
-def display_products(request):
-    product_list = ProductDb.objects.all()
-    return render(request,'display_products.html',{'product_list':product_list})
-
 
 @login_required
 @seller_required
@@ -92,7 +87,7 @@ def add_product(request):
     else:
         form = AddProductForm()
 
-    return render(request,'add_product.html',{'form':form})
+    return render(request,'seller/add_product.html',{'form':form})
 
 
 @login_required
@@ -100,7 +95,7 @@ def add_product(request):
 def seller_products(request):
     product_list = ProductDb.objects.filter(product_seller= request.user)
     ProductDb.objects.filter(product_image='').delete()
-    return render(request,'seller_products.html',{'product_list':product_list})
+    return render(request,'seller/seller_products.html',{'product_list':product_list})
 
 
 @login_required
@@ -120,7 +115,7 @@ def edit_product(request,id):
     else:
         form = AddProductForm(instance=product)
     
-    return render(request,'edit_product.html',{'form':form})
+    return render(request,'seller/edit_product.html',{'form':form})
 
 
 @login_required
@@ -134,3 +129,24 @@ def delete_product(request,id):
 
     product.delete()
     return redirect('seller_products')
+
+
+
+@login_required
+def home_page(request):
+    product_list = ProductDb.objects.all()
+    category_list = CategoryDb.objects.all()
+    return render(request,'buyer/home_page.html',{'product_list':product_list,'category_list':category_list})
+
+
+
+@login_required
+def display_products(request,category_name):
+    product_list = ProductDb.objects.filter(product_category__category_name=category_name)
+    return render(request,'buyer/display_products.html',{'product_list':product_list})
+
+
+@login_required
+def view_product(request,id):
+    product = ProductDb.objects.get(id = id)
+    return render(request,'buyer/view_product.html',{'product':product})
