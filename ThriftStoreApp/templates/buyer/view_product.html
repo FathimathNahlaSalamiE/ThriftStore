@@ -34,36 +34,61 @@ Product
                         </div>
                         <p class="product-price card-text fw-bold">₹ {{ product.product_price }}</p>
 
-                        <form action="" method="post" enctype="multipart/form-data">
-					{% csrf_token %}
+                        <form action="{% url 'add_to_cart' product.id %}" method="post">
+                            {% csrf_token %}
+
+                            <!-- Quantity -->
                             <div style="
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
+                                display:flex;
+                                justify-content:center;
+                                align-items:center;
                             ">
-                                <input style="
-                                    text-align: center;
-                                    width: 45%;
-                                    background-color: #f3eded;" 
-                                    class="mt-1 p-1" type="number" id="quantity" min="1" placeholder="Quantity">
-                            </div>                            
-                            <div><input  type="hidden" id="price" value="{{ product.product_price }}" placeholder="Price" readonly></div>
-                            <div style="
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                ">
-                                    <input class="mt-3 p-1" style="
-                                        text-align: center;
-                                        width: 45%;
-                                        background-color: #f3eded;
-                                        font-size:medium;" type="text" id="total" placeholder="Total Price" readonly>
+                                <input 
+                                    style="
+                                        text-align:center;
+                                        width:45%;
+                                        background-color:#f3eded;
+                                    "
+                                    class="mt-1 p-1"
+                                    type="number"
+                                    id="quantity"
+                                    name="quantity"
+                                    min="1"
+                                    placeholder="Quantity"
+                                    required>
                             </div>
-                            
-									<input type="hidden" name="username" id="" placeholder="" class="form-control" value="{{request.user.username}}">
-									<input type="hidden" name="pname" id="" placeholder="" class="form-control" value="{{product.product_name}}">
-                                    
-							<button class="edit-btn" type="submit"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+
+                            <!-- Hidden Product Price -->
+                            <input 
+                                type="hidden"
+                                id="price"
+                                value="{{ product.product_price }}">
+
+                            <!-- Total Price -->
+                            <div style="
+                                display:flex;
+                                justify-content:center;
+                                align-items:center;
+                            ">
+                                <input 
+                                    class="mt-3 p-1"
+                                    style="
+                                        text-align:center;
+                                        width:45%;
+                                        background-color:#f3eded;
+                                        font-size:medium;
+                                    "
+                                    type="text"
+                                    id="total"
+                                    name="total_price"
+                                    placeholder="Total Price"
+                                    readonly>
+                            </div>
+
+                            <button class="edit-btn mt-3" type="submit">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
                         </form>
         
                     </div>

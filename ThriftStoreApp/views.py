@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import CustomUser,ProductDb,CategoryDb
+from .models import CustomUser,ProductDb,CategoryDb,CartDb
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
 from .forms import SignupForm,LoginForm,AddProductForm
@@ -150,3 +150,22 @@ def display_products(request,category_name):
 def view_product(request,id):
     product = ProductDb.objects.get(id = id)
     return render(request,'buyer/view_product.html',{'product':product})
+
+
+
+@login_required
+def add_to_cart(request,id):
+    product = ProductDb.objects.get(id=id)
+    if request.method == "POST":
+        quantity = request.POST.get('quantity')
+        total_price = request.POST.get('total_price')
+
+        CartDb.objects.create(
+            user=request.user,
+            product=product,
+            quantity=quantity,
+            total_price=total_price
+        )
+        return redirect('home_page')
+
+    return render(request,'buyer/product_page.html',{'product': product})
