@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Product
+{% endblock %}
+
+{% block content %}
+
+<h2>Order Summary</h2>
+
+<table class="table">
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Total</th>
+    </tr>
+
+    {% for item in cart_items %}
+    <tr>
+        <td>{{ item.product.product_name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td> AED {{ item.total_price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3 class="text-end">
+    Grand Total :  AED {{ total_amount }}
+</h3>
+
+<div class="text-end mt-3">
+    <a href="{% url 'address_page' %}"
+    class="btn btn-success">
+    Place Order
+    </a>
+</div>
+
+{% endblock %}

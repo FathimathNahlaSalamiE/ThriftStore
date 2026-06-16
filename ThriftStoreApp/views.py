@@ -1,9 +1,14 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import CustomUser,ProductDb,CategoryDb,CartDb
+from .models import CustomUser,ProductDb,CategoryDb,CartDb,AddressDb,OrderDb,OrderItem
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
 from .forms import SignupForm,LoginForm,AddProductForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+import stripe
+from django.conf import settings
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 def signup(request):
@@ -156,16 +161,193 @@ def view_product(request,id):
 @login_required
 def add_to_cart(request,id):
     product = ProductDb.objects.get(id=id)
+
     if request.method == "POST":
-        quantity = request.POST.get('quantity')
-        total_price = request.POST.get('total_price')
+        quantity = int(request.POST.get('quantity'))
+
+        price = product.product_price
+        total_price = quantity*price
 
         CartDb.objects.create(
             user=request.user,
             product=product,
             quantity=quantity,
+            price=price,
             total_price=total_price
         )
-        return redirect('home_page')
 
-    return render(request,'buyer/product_page.html',{'product': product})
+        return redirect('cart_page')
+
+    return render(request,'buyer/view_product.html',{'product': product})
+
+@login_required
+def cart_page(request):
+    cart_items = CartDb.objects.filter(user=request.user)
+
+    total_amount = 0
+    for item in cart_items:
+        total_amount += item.total_price
+
+    return render(request, 'buyer/cart_page.html', {
+        'cart_items': cart_items,
+        'total_amount': total_amount
+    })
+
+@login_required
+def increase_quantity(request, id):
+    item = CartDb.objects.get(id=id)
+
+    item.quantity += 1
+    item.total_price = item.quantity * item.price
+    item.save()
+
+    return redirect('cart_page')
+
+@login_required
+def decrease_quantity(request, id):
+    item = CartDb.objects.get(id=id)
+
+    if item.quantity > 1:
+        item.quantity -= 1
+        item.total_price = item.quantity * item.price
+        item.save()
+
+    return redirect('cart_page')
+
+@login_required
+def delete_cart(request, id):
+    cart_item = CartDb.objects.get(id=id)
+    cart_item.delete()
+    
+    return redirect('cart_page')
+
+
+@login_required
+def checkout(request):
+    cart_items = CartDb.objects.filter(user=request.user)
+
+    if not cart_items.exists():
+        messages.warning(request, "Your cart is empty.")
+        return redirect('cart_page')
+
+    total_amount = sum(item.total_price for item in cart_items)
+
+    return render(request, 'buyer/checkout.html', {
+        'cart_items': cart_items,
+        'total_amount': total_amount
+    })
+
+@login_required
+def address_page(request):
+    if request.method == "POST":
+        print("Address form submitted")
+        AddressDb.objects.create(
+            user=request.user,
+            full_name=request.POST.get('full_name'),
+            phone=request.POST.get('phone'),
+            house_name=request.POST.get('house_name'),
+            street=request.POST.get('street'),
+            city=request.POST.get('city'),
+            state=request.POST.get('state'),
+            pincode=request.POST.get('pincode')
+        )
+        print("Redirecting to payment page")
+        return redirect('payment_page')
+
+    return render(request, 'buyer/address.html')
+
+@login_required
+def payment_page(request):
+
+    cart_items = CartDb.objects.filter(user=request.user)
+
+    total = sum(item.total_price for item in cart_items)
+
+    checkout_session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[
+            {
+                'price_data': {
+                    'currency': 'usd',
+                    'product_data': {
+                        'name': 'Thrift Store Order',
+                    },
+                    'unit_amount': int(total * 100),
+                },
+                'quantity': 1,
+            },
+        ],
+        mode='payment',
+        success_url='http://127.0.0.1:8000/ThriftStoreApp/payment_success/',
+        cancel_url='http://127.0.0.1:8000/ThriftStoreApp/payment_cancel/',
+    )
+
+    return redirect(checkout_session.url)
+
+
+@login_required
+def payment_success(request):
+
+    cart_items = CartDb.objects.filter(user=request.user)
+
+    total = sum(item.total_price for item in cart_items)
+
+    order = OrderDb.objects.create(
+        user=request.user,
+        total_amount=total,
+        payment_status='Paid'
+    )
+
+    for item in cart_items:
+        OrderItem.objects.create(
+            order=order,
+            product=item.product,
+            quantity=item.quantity,
+            price=item.price,
+            total_price=item.total_price
+        )
+
+    cart_items.delete()
+
+    return render(request, 'buyer/success.html')
+
+@login_required
+def payment_cancel(request):
+    return render(request, 'buyer/payment_cancel.html')
+
+@login_required
+def my_orders(request):
+
+    orders = OrderDb.objects.filter(
+        user=request.user
+    ).order_by('-created_at')
+
+    return render(request,'buyer/my_orders.html',{'orders': orders})
+
+@login_required
+def order_again(request, id):
+
+    order_item = get_object_or_404(
+        OrderItem,
+        id=id,
+        order__user=request.user
+    )
+
+    cart_item, created = CartDb.objects.get_or_create(
+        user=request.user,
+        product=order_item.product,
+        defaults={
+            'quantity': order_item.quantity,
+            'price': order_item.price,
+            'total_price': order_item.total_price
+        }
+    )
+
+    if not created:
+        cart_item.quantity += order_item.quantity
+        cart_item.total_price = (
+            cart_item.quantity * cart_item.price
+        )
+        cart_item.save()
+
+    return redirect('cart_page')

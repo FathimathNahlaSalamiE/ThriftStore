@@ -122,6 +122,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
+STRIPE_PUBLIC_KEY = "pk_test_51TifHPFLUoeCR0B3VJZvQpyLaH0Raqg8SKbU9ETFupaQNzISATFjPwWo4OX62WAdfFSeAMVHMwT8h1M8VW1ZXYqE00EdBDD47k"
+STRIPE_SECRET_KEY = "sk_test_51TifHPFLUoeCR0B3NDCMmLOI8hhrX2QOjjLuZ3GWmXXsjgHJLd4NAfgRDczLFZrVBbDReiFT29wbOFqVQqw1iGaq00u37Fuwv0"
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

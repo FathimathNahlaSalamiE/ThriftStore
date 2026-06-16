@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Product
+{% endblock %}
+
+{% block content %}
+
+<div class="container text-center mt-5">
+    <div class="card shadow p-5">
+
+        <h1 class="text-danger">
+            Payment Cancelled
+        </h1>
+
+        <p>
+            Your payment was not completed.
+        </p>
+
+        <a href="{% url 'cart_page' %}" class="btn btn-warning">
+            Back to Cart
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

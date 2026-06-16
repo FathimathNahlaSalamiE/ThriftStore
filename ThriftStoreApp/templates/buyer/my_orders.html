@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Product
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">My Orders</h2>
+
+    {% for order in orders %}
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <strong>Order #{{ order.id }}</strong>
+            <span class="float-end">
+                {{ order.created_at }}
+            </span>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                <strong>Total:</strong>
+                AED {{ order.total_amount }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                {{ order.payment_status }}
+            </p>
+
+            <hr>
+
+            {% for item in order.items.all %}
+
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+                    <img src="{{ item.product.product_image.url }}"
+                         class="img-fluid rounded"
+                         width="120">
+                </div>
+
+                <div class="col-md-9">
+                    <h5>{{ item.product.product_name }}</h5>
+
+                    <p>
+                        Quantity: {{ item.quantity }}
+                    </p>
+
+                    <p>
+                        Price: AED {{ item.price }}
+                    </p>
+
+                    <p>
+                        Total: AED {{ item.total_price }}
+                    </p>
+                </div>
+                <div class="mt-2">
+                    <a href="{% url 'order_again' item.id %}"
+                    class="btn btn-primary btn-sm">
+                        Order Again
+                    </a>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="alert alert-info">
+        You haven't placed any orders yet.
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

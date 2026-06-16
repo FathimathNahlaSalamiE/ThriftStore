@@ -148,3 +148,34 @@ label {
     gap: 20px;   /* 🔥 uniform gap */
     margin-left: 25px;
 }
+.qty-btn{
+    width: 30px  ;
+    height: 30px  ;
+    min-width: 30px;
+
+    padding: 0  ;
+    margin: 0  ;
+
+    font-size: 16px  ;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #ccc ;
+    background: #fff  ;
+    color: #000  ;
+
+    flex: 0 0 30px;
+}
+.qty-btn:hover{
+    color: white  ;
+}
+.qty-input{
+    width: 50px ;
+    height: 30px;
+    padding: 0 ;
+    margin: 0 ;
+    text-align: center;
+}

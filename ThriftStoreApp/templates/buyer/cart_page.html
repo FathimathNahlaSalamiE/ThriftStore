@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Product
+{% endblock %}
+
+{% block content %}
+
+<h2>Cart page</h2>
+
+<table class="table table-bordered text-center">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for item in cart_items %}
+        <tr>
+            <td class="d-flex justify-content-start align-items-center col-lg-5">
+
+                <a href="{% url 'delete_cart' item.id %}"
+                class="text-danger"
+                onclick="return confirm('Remove this item from cart?')">
+                    <i class="bi bi-trash-fill"></i>
+                </a>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <a href="{% url 'view_product' item.id %}" style="text-align: right;text-decoration: none;color: black;">
+                    <img src="{{ item.product.product_image.url }}"
+                        alt="{{ item.product.product_name }}"
+                        class="img-fluid rounded"
+                        style="height:35px; object-fit:cover;">
+                        <span>{{ item.product.product_name }}</span>
+                </a>
+            </td>
+
+            <td>
+                <div class="d-flex justify-content-center align-items-center">
+
+                    <a href="{% url 'decrease_quantity' item.id %}"
+                    class="btn btn-outline-secondary btn-sm">
+                        -
+                    </a>
+
+                    <span class="mx-3 fw-bold">
+                        {{ item.quantity }}
+                    </span>
+
+                    <a href="{% url 'increase_quantity' item.id %}"
+                    class="btn btn-outline-secondary btn-sm">
+                        +
+                    </a>
+
+                </div>
+            </td>
+
+            <td> AED {{ item.price }}</td>
+
+            <td> AED {{ item.total_price }}</td>
+
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-between align-items-center mt-4">
+
+    <h4>
+        Total Amount :  AED {{ total_amount }}
+    </h4>
+
+    {% if cart_items %}
+    <a href="{% url 'checkout' %}"
+       class="btn btn-success btn-lg">
+        Proceed to Checkout
+    </a>
+    {% else %}
+        <p class="text-danger fw-bold">
+            Add products to your cart before checkout.
+        </p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
