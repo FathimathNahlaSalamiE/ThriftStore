@@ -3,7 +3,7 @@ from ThriftStoreApp import views
 
 urlpatterns = [
     path('signup/',views.signup,name='signup'),
-    path('login/',views.login_view,name='login'),
+    path('',views.login_view,name='login'),
     path('logout/',views.logout_view,name='logout'),
     path('seller_products/',views.seller_products,name='seller_products'),
     path('add_product/',views.add_product,name='add_product'),

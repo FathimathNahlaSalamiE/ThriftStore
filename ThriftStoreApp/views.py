@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import stripe
 from django.conf import settings
+from django.urls import reverse
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -29,6 +30,9 @@ def signup(request):
             user.save()
 
             return redirect('login')
+        else:
+            print(form.errors)
+        
     else:
         form = SignupForm()
     
@@ -268,7 +272,7 @@ def payment_page(request):
         line_items=[
             {
                 'price_data': {
-                    'currency': 'usd',
+                    'currency': 'aed',
                     'product_data': {
                         'name': 'Thrift Store Order',
                     },
@@ -278,8 +282,8 @@ def payment_page(request):
             },
         ],
         mode='payment',
-        success_url='http://127.0.0.1:8000/ThriftStoreApp/payment_success/',
-        cancel_url='http://127.0.0.1:8000/ThriftStoreApp/payment_cancel/',
+        success_url=request.build_absolute_uri(reverse('payment_success')),
+        cancel_url=request.build_absolute_uri(reverse('payment_cancel')),
     )
 
     return redirect(checkout_session.url)

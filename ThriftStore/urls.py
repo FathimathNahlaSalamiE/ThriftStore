@@ -22,5 +22,5 @@ import ThriftStoreApp.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('ThriftStoreApp/',include(ThriftStoreApp.urls))
+    path('',include(ThriftStoreApp.urls))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

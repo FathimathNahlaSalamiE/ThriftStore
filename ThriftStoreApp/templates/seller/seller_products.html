@@ -8,8 +8,8 @@ Seller Products
 
 {% block content %}
 
-<h2>My Products</h2>
-    <a href="{% url 'add_product' %}">Add product</a>
+<h2 style="text-align: center;">My Products</h2>
+    <a style="margin-bottom: 10px;" class="btn edit-btn" href="{% url 'add_product' %}">Add product</a>
     <div class="products-grid">
         {% for product in product_list %}
                 <div class="card product-card">
