@@ -8,7 +8,7 @@ Seller Products
 
 {% block content %}
     <h2>Edit Product</h2>
-    <a href="{% url 'seller_products' %}">Back to Home</a>
+    <a style="margin-bottom: 10px;" class="btn edit-btn" href="{% url 'seller_products' %}">Back to Home</a>
     <div>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}

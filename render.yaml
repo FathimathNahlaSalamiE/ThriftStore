@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: ThriftStore
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn your_project_name.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False

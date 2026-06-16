@@ -1,0 +1,181 @@
+*{
+    font-family:Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: .2s linear;
+}
+:root{
+    --main-color:#aa5656;
+    --black:#3b3b3e;
+    --bg:#f3eded;
+    --border:.1rem solid rgba(128, 124, 124, 0.763);
+}
+html{
+    font-size: 62.5%;
+    overflow-x: hidden;
+    scroll-padding-top: 9rem;
+    scroll-behavior: smooth;
+}
+html::-webkit-scrollbar{
+    width: .8rem;
+}
+html::-webkit-scrollbar-track{
+    background: transparent;
+}
+html::-webkit-scrollbar-thumb{
+    background: #fff;
+    border-radius: 5rem;
+}
+body {
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+main {
+    flex: 1;
+}
+.signup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.7rem;
+    background: var(--main-color);
+    color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top:10px ;
+}
+button:hover {
+    background-color: #863535;
+    transform: translateY(-1px);
+}
+.edit-btn {
+    background: var(--main-color);
+    color: #fff;
+}
+button,.edit-btn:hover {
+    background-color: #863535;
+    color: #fff;
+}
+.form-css {
+    padding: 2rem;
+    width: clamp(280px, 35vw, 450px);
+    min-height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.form-heading{
+    text-align: center;
+}
+.form-input {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--main-color);
+    box-shadow: 0 0 5px rgba(170, 86, 86, 0.3);
+}
+label {
+    font-size: 1.4rem;
+    color: var(--black);
+    margin-bottom: 0.3rem;
+    display: block;
+    font-weight: 500;
+}
+.header {
+    background: #aa5656;
+    color: white;
+    padding: 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header nav a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+.footer {
+    background: #3b3b3e;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+}
+.card {
+    width: fit-content;   /* 🔥 key line */
+}
+.product-card {
+    width: 250px;   /* 🔥 controls card width */
+}
+.card-img-top {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+}
+.description {
+    height: 92px;       
+    overflow-y: auto;     
+    font-size: 1rem;
+}
+.product-price{
+    font-size: 1.4rem;
+}
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;   /* 🔥 uniform gap */
+    margin-left: 25px;
+}
+.qty-btn{
+    width: 30px  ;
+    height: 30px  ;
+    min-width: 30px;
+
+    padding: 0  ;
+    margin: 0  ;
+
+    font-size: 16px  ;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #ccc ;
+    background: #fff  ;
+    color: #000  ;
+
+    flex: 0 0 30px;
+}
+.qty-btn:hover{
+    color: white  ;
+}
+.qty-input{
+    width: 50px ;
+    height: 30px;
+    padding: 0 ;
+    margin: 0 ;
+    text-align: center;
+}
