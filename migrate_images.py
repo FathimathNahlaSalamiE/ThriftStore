@@ -3,18 +3,28 @@ import cloudinary.uploader
 import os
 
 cloudinary.config(
-    cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    api_key = os.environ.get('CLOUDINARY_API_KEY'),
-    api_secret = os.environ.get('CLOUDINARY_API_SECRET')
+    cloud_name = "dr9ritwbk",
+    api_key = "353241786855269",
+    api_secret = "f5xV0yfUbcyGPNHejZ_mdFSmaYA"
 )
 
-media_folder = 'media'
+base = 'media'
 
-for root, dirs, files in os.walk(media_folder):
+for root, dirs, files in os.walk(base):
     for filename in files:
         filepath = os.path.join(root, filename)
-        print(f"Uploading {filepath}...")
-        cloudinary.uploader.upload(filepath)
-        print(f"✅ Done: {filename}")
+        relative = os.path.relpath(filepath, base)
+        public_id = relative.replace('\\', '/').rsplit('.', 1)[0]
 
-print("All images uploaded!")
+        print(f"Uploading: {public_id}")
+        cloudinary.uploader.upload(
+            filepath,
+            public_id=public_id,
+            overwrite=True,
+            resource_type="image",
+            use_filename=True,
+            unique_filename=False
+        )
+        print(f"✅ Done: {public_id}")
+
+print("\nAll images uploaded!")
