@@ -31,7 +31,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://your-app-name.onrender.com',
+    'https://thriftstore.onrender.com',
 ]
 
 # Tell Django to use Cloudinary for media files
@@ -54,9 +54,9 @@ INSTALLED_APPS = [
 
 # Cloudinary settings
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('dr9ritwbk'),
-    'API_KEY': os.environ.get('353241786855269'),
-    'API_SECRET': os.environ.get('f5xV0yfUbcyGPNHejZ_mdFSmaYA'),
+    'CLOUD_NAME': 'dr9ritwbk',
+    'API_KEY': '353241786855269',
+    'API_SECRET': 'f5xV0yfUbcyGPNHejZ_mdFSmaYA',
 }
 
 MIDDLEWARE = [
