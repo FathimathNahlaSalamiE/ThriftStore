@@ -24,8 +24,8 @@ Product
 
     {% for item in cart_items %}
         <tr>
-            <td class="d-flex justify-content-start align-items-center col-lg-5">
-
+            <td>
+                <div class="d-flex justify-content-start align-items-center col-lg-5">
                 <a href="{% url 'delete_cart' item.id %}"
                 class="text-danger"
                 onclick="return confirm('Remove this item from cart?')">
@@ -43,6 +43,7 @@ Product
                         style="height:35px; object-fit:cover;">
                         <span>{{ item.product.product_name }}</span>
                 </a>
+                </div>
             </td>
 
             <td>
