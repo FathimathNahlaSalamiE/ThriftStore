@@ -127,12 +127,17 @@ label {
     width: fit-content;   /* 🔥 key line */
 }
 .product-card {
-    width: 250px;   /* 🔥 controls card width */
+    width: 100%;   /* 🔥 controls card width */
+    max-width: 250px;
 }
 .card-img-top {
     width: 100%;
-    height: 250px;
+    height: auto;
     object-fit: contain;
+}
+img{
+    max-width: 100%;
+    height: auto;
 }
 .description {
     height: 92px;       

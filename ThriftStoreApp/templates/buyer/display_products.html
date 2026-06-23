@@ -14,7 +14,7 @@ Products
  <a href="{% url 'view_product' product.id %}" style="text-decoration: none;">
 <div class="card product-card">
                     <img src="{{ product.product_image.url }}" class="card-img-top" alt="">
-                    <div class="card-body d-flex flex-column">
+                    <div class="card-body d-flex flex-wrap flex-column">
                         <h2 class="card-title">{{ product.product_name }}</h2>
                         <p class="card-text"><small class="text-body-secondary">{{ product.product_category }}</small></p>
                         <div class="desc-wrapper">
