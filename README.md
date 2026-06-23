@@ -16,7 +16,7 @@ A multi-role e-commerce web application for buying and selling second-hand goods
 <img width="1912" height="960" alt="Screenshot 2026-06-20 014148" src="https://github.com/user-attachments/assets/4488b575-ef5f-423d-9cd9-2a3d49e45684" />
 <img width="1912" height="966" alt="Screenshot 2026-06-20 014811" src="https://github.com/user-attachments/assets/06692282-4602-4ff2-aca2-4fa5bd757519" />
 <img width="1917" height="961" alt="Screenshot 2026-06-20 014319" src="https://github.com/user-attachments/assets/ea022583-da6d-4e36-bbca-cb68c5a43c7a" />
-<img width="1917" height="960" alt="Screenshot 2026-06-20 014339" src="https://github.com/user-attachments/assets/4b9d610b-6ee3-4ef8-9024-5d7fac4a6136" />
+<img width="1913" height="961" alt="Screenshot 2026-06-20 185602" src="https://github.com/user-attachments/assets/bcea4004-3389-41ab-8afb-9713fc7967ed" />
 
 ---
 
