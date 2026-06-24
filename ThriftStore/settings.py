@@ -133,6 +133,19 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = [
+    'https://thriftstore-55yl.onrender.com',
+]
+
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+# Session Settings
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
